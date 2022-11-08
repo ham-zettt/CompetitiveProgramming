@@ -29,7 +29,6 @@ int main(){
 		if(i%4==2 || i%4==3){
 			ans++;
 		}
-	}
-	
+	}	
 	cout << ans << endl;
 }
