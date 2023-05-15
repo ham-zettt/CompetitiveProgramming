@@ -1,3 +1,3 @@
-just my random archive :)
+just my random archive
 
 -ilhamz
