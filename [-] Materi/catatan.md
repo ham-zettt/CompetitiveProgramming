@@ -43,7 +43,7 @@ void permutation(int depth){
 Dimulai dari `permutation(0)`, dari situ akan bercabang sebanyak n, dan seterusnya.
 
 ### > Brute Force Kombinasi
-untuk melakukan kombinasi, cukup mengubah perulangan for pada bagian rekursi. Ubah agar perulangan dimulai dari _angka yang dicatat + 1_. Jadi angka sebelumnya tidak akan dicatat lagi.
+untuk melakukan kombinasi, cukup mengubah perulangan for pada bagian rekursi. Ubah agar perulangan dimulai dari _angka yang dicatat + 1_. Jadi angka sebelumnya tidak akan dicatat lagi. Sehingga _boolean pernah_ tidak perlu dipakai
 `i = catat[depth-1] + 1`
 
 ## Greedy
@@ -123,10 +123,16 @@ if(i/3 == floor(i/3)) isDecimal = false;
 ```
 
 ### Determine its a perfect square
-
 ```cpp
 temp = round(sqrt(i));
 if(temp*temp == i) isPerfect = true;
+```
+
+### Sort pair based on second (boolean)
+```cpp
+bool sort_second(pair<int, int> &a, pair<int, int> &b){
+	return a.second < b.second;
+}
 ```
 
 ## Algorithm
