@@ -1,85 +1,13 @@
-# CP Note (C++ used)
-
-## Brute Force
-suatu strategi dengan cara **mecoba semua kemungkinan** (complete search). Sehingga pasti menemukan solusi yang diharapkan, tetapi memiliki waktu yang relatif lama.
-
-Contoh persoalan:
-> Diberikan sebuah persamaan: p+q+r = 0. Masing-masing dari p, q, dan r harus merupakan anggota dari {a1,a2,...,aN}. Diketahui pula bahwa semua nilai {a1,a2,...,aN}
-unik. Berapa banyak triplet hp,q,ri berbeda yang memenuhi persamaan tersebut?
-
-Solusi Brute Force:
-Coba semua kemungkinan dengan menggunakan perulangan sebanyak n (banyaknya variabel). Karena n=3, maka waktu kompleksitasnya $$O(n^3)$$
-- Algoritma dapat doptimasi dengan cara: setelah menentukan nilai p dan q, tentukan nilai r dengan -(p+q). Lalu tentukan apakah nilai r ada di anggota himpunan dengan menggunakan binary search agar lebih cepat. Jika ada maka sudah pasti bernilai 0, jadi simpan hasil dari p+q+r. Waktu kompleksitasnya $$O(n^2 log n)$$
-
-### > Brute Force Permutasi
-Untuk menampilkan semua permutasi bisa menggunakan iterasi biasa, tetapi jumlah iterasi tidak bisa ditentukan, karena mengikuti jumlah data (n). Maka solusinya adalah rekursif:
-```cpp
-char catat[n];
-bool pernah[n];  // all false
-
-void permutation(int depth){
-    // base case
-	if(depth == n){
-  		for(int i=0; i<n; i++){    // loop hasil akhir
-			cout << catat[i];
-		}
-		cout << endl;
-		
-	} else {
-		for(int i=0; i<n; i++){
-    		// sebelum masuk ke rekursif, cek apakah
-    		// karakter sudah pernah digunakan. Agar
-    		// tidak ada digit berulang
-			if(!pernah[i]){
-				pernah[i] = true;
-				catat[depth] = arr[i];  // catat hasil permutasi
-				permutation(depth + 1);
-				pernah[i] = false;  // reset untuk depth lainnya
-			}
-		}
-	}
-}
-```
-Dimulai dari `permutation(0)`, dari situ akan bercabang sebanyak n, dan seterusnya.
-
-### > Brute Force Kombinasi
-untuk melakukan kombinasi, cukup mengubah perulangan for pada bagian rekursi. Ubah agar perulangan dimulai dari _angka yang dicatat + 1_. Jadi angka sebelumnya tidak akan dicatat lagi. Sehingga _boolean pernah_ tidak perlu dipakai
-`i = catat[depth-1] + 1`
-
-## Greedy
-suatu strategi dengan **mencari solusi paling optimal hingga ke subproblem**, sehingga memiliki waktu eksekusi yang cepat dan mudah diimplementasikan. 
-
-Greedy dapat dilakukan saat:
-- Solusi optimal dapat ditentukan dari subproblem
-- Memiliki _Greedy Choice_
-
-**Greedy choice** merupakan langkah yang akan menghasilkan solusi optimal. Contoh: 
-> Anda ingin menukar uang Rp12.000 dengan lembaran uang kertas Rp5.000,
-Rp2.000, dan Rp1.000. Anda ingin menukar dengan jumlah lembaran sesedikit
-mungkin.
-
-- Problem: proses penukaran uang (n)
-- Subproblemnya: proses penukaran selanjutnya setelah menukar uang ke-n
-- Greedy choice-nya: menukar uang dengan nominal sebesar mungkin
-
-Persoalan tersebut dapat dilakukan dengan Greedy karena terdapat subproblem yag juga dapat ditentukan greedy choicenya.
-
-**Kelemahan Greedy**
-Tidak semua persoalan dapat diselesaikan dengan Greedy. Sesuai persoalan diatas, jika uang yang tersedia untuk ditukar adalah Rp5.000, Rp4.000, dan Rp1.000 , maka Greedy tidak memberikan solusi optimal
-
-- Solusi Greedy:  Rp5.000, Rp5.000, Rp1.000, Rp1.000
-- Solusi optimal:  Rp4.000, Rp4.000, Rp4.000
+# C++ Catatan
 
 ## For Your Information
 ### Print Variable type
-
 ```cpp
 cout << typeid(var).name();
 ```
 
 ### Prototype function
-
-By default, C++ function have to be declared before the main function. To create it below, make a prototype as a declaration.
+Deklarasi fungsi disebelum main dapat dilakukan dengan cara membuat prototype:
 ```cpp
 void solve(int a, int b);
 int main(){
@@ -96,7 +24,7 @@ void solve(int a, int b){
 getline(cin, input);
 ```
 
-### goto Function
+### _goto_ Function
 Go to the spesific flag
 ```cpp
 flagName:
@@ -133,12 +61,15 @@ if(temp*temp == i) isPerfect = true;
 bool sort_second(pair<int, int> &a, pair<int, int> &b){
 	return a.second < b.second;
 }
+
+vector<pair<int,int>> pr;
+sort(pr, pr.size(), sort_second);
 ```
 
 ## Algorithm
 
 ### Linear search
-
+Time complexity: $$O(n)$$
 ```cpp
 for(int i=0; i<n; i++){
 	if(arr[i] == search) isFound = true;
@@ -147,6 +78,7 @@ for(int i=0; i<n; i++){
 
 ### Binary search
 Pengurutan seperti halnya mencari kata didalam kamus. 
+Time complexity: $$O(log n)$$
 ```cpp
 mid = 0;
 ans = 0;
@@ -195,12 +127,6 @@ for(int i=0; i<n; i++){
 }
 ```
 
-### Counting Sort
-Pengurutan dengan cara menghitung berapa kali jumlah elemen x muncul . Lalu, kembalikan semua dari elemen terkecil (ascending)
-```cpp
-
-```
-
 ### Sorting with Parameter Function
 ```cpp
 bool sc(int a, int b){
@@ -246,11 +172,7 @@ for(int i=0; i<n; i++){
 ```
 
 ## STRING
-
----
-
 ### Uppercase and lowercase
-
 ```cpp
 //to check
 isupper(c)
@@ -261,7 +183,6 @@ tolower(c)
 ```
 
 ### Convert string <-> integer
-
 ```cpp
 stoi(s);  // string to integer
 to_string(i);  // integer to string
@@ -275,9 +196,6 @@ s.erase(2, 4);  // earse from index 2, up to 4 character
 ```
 
 ## ARRAY
-
----
-
 ### Array summary
 
 ```cpp
@@ -361,8 +279,6 @@ vt.empty()   //check empty
 
 ## FUNCTION
 
----
-
 ### Reverse number
 
 ```cpp
@@ -398,3 +314,74 @@ int euclid(int a, int b){
 		else return euclid(b, %b);
 }
 ```
+
+# CP Strategy
+## Brute Force
+suatu strategi dengan cara **mecoba semua kemungkinan** (complete search). Sehingga pasti menemukan solusi yang diharapkan, tetapi memiliki waktu yang relatif lama.
+
+Contoh persoalan:
+> Diberikan sebuah persamaan: p+q+r = 0. Masing-masing dari p, q, dan r harus merupakan anggota dari {a1,a2,...,aN}. Diketahui pula bahwa semua nilai {a1,a2,...,aN}
+unik. Berapa banyak triplet hp,q,ri berbeda yang memenuhi persamaan tersebut?
+
+Solusi Brute Force:
+Coba semua kemungkinan dengan menggunakan perulangan sebanyak n (banyaknya variabel). Karena n=3, maka waktu kompleksitasnya $$O(n^3)$$
+- Algoritma dapat doptimasi dengan cara: setelah menentukan nilai p dan q, tentukan nilai r dengan -(p+q). Lalu tentukan apakah nilai r ada di anggota himpunan dengan menggunakan binary search agar lebih cepat. Jika ada maka sudah pasti bernilai 0, jadi simpan hasil dari p+q+r. Waktu kompleksitasnya $$O(n^2 log n)$$
+
+### > Brute Force Permutasi
+Untuk menampilkan semua permutasi bisa menggunakan iterasi biasa, tetapi jumlah iterasi tidak bisa ditentukan, karena mengikuti jumlah data (n). Maka solusinya adalah rekursif:
+```cpp
+char catat[n];
+bool pernah[n];  // all false
+
+void permutation(int depth){
+    // base case
+	if(depth == n){
+  		for(int i=0; i<n; i++){    // loop hasil akhir
+			cout << catat[i];
+		}
+		cout << endl;
+		
+	} else {
+		for(int i=0; i<n; i++){
+    		// sebelum masuk ke rekursif, cek apakah
+    		// karakter sudah pernah digunakan. Agar
+    		// tidak ada digit berulang
+			if(!pernah[i]){
+				pernah[i] = true;
+				catat[depth] = arr[i];  // catat hasil permutasi
+				permutation(depth + 1);
+				pernah[i] = false;  // reset untuk depth lainnya
+			}
+		}
+	}
+}
+```
+Dimulai dari `permutation(0)`, dari situ akan bercabang sebanyak n, dan seterusnya.
+
+### > Brute Force Kombinasi
+untuk melakukan kombinasi, cukup mengubah perulangan for pada bagian rekursi. Ubah agar perulangan dimulai dari _angka yang dicatat + 1_. Jadi angka sebelumnya tidak akan dicatat lagi. Sehingga _boolean pernah_ tidak perlu dipakai
+`i = catat[depth-1] + 1`
+
+## Greedy
+suatu strategi dengan **mencari solusi paling optimal hingga ke subproblem**, sehingga memiliki waktu eksekusi yang cepat dan mudah diimplementasikan. 
+
+Greedy dapat dilakukan saat:
+- Solusi optimal dapat ditentukan dari subproblem
+- Memiliki _Greedy Choice_
+
+**Greedy choice** merupakan langkah yang akan menghasilkan solusi optimal. Contoh: 
+> Anda ingin menukar uang Rp12.000 dengan lembaran uang kertas Rp5.000,
+Rp2.000, dan Rp1.000. Anda ingin menukar dengan jumlah lembaran sesedikit
+mungkin.
+
+- Problem: proses penukaran uang (n)
+- Subproblemnya: proses penukaran selanjutnya setelah menukar uang ke-n
+- Greedy choice-nya: menukar uang dengan nominal sebesar mungkin
+
+Persoalan tersebut dapat dilakukan dengan Greedy karena terdapat subproblem yag juga dapat ditentukan greedy choicenya.
+
+**Kelemahan Greedy**
+Tidak semua persoalan dapat diselesaikan dengan Greedy. Sesuai persoalan diatas, jika uang yang tersedia untuk ditukar adalah Rp5.000, Rp4.000, dan Rp1.000 , maka Greedy tidak memberikan solusi optimal
+
+- Solusi Greedy:  Rp5.000, Rp5.000, Rp1.000, Rp1.000
+- Solusi optimal:  Rp4.000, Rp4.000, Rp4.000
