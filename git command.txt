@@ -1,3 +1,4 @@
+git remote add origin https://github.com/ham-zettt/for-you.git
 git status
 git add .
 git commit -m "commit message" 
