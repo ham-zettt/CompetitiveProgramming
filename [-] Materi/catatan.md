@@ -183,6 +183,12 @@ for(int i=1; i<n; i++){
 }
 ```
 
+Atau gunakan fungsi dari STL:numeric partial_sum
+```cpp
+int arr[] = {1,2,3}, ps[n];
+partial_sum(arr, arr+n, ps[n]) //hasil akan disimpan di array ps
+```
+
 Untuk mengakses jumlah subarray $$l$$ sampai $$r$$, gunakan perhitungan:
 ```cpp
 int subarray = ps[r] - ps[l-1]
