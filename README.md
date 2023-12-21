@@ -356,13 +356,10 @@ if(A[i] == B[i]){
 		int current = st.top();
 		st.pop();
 
-		if(!visited[current]){  // tandai sudah dikunjungi
-			visited[current] = true;
-		}
-
-		for(int i=1; i<=n; i++){
+		for(int i=1; i<=n; i++){	// cari semua node tetangga yg belum dikujungi
 			if(jalur[current][i] && !visited[i]){
 				st.push(i);
+				visited[i] = true;	// setelah ditemukan, langsung tandai
 			}
 		}		
 
@@ -382,13 +379,10 @@ if(A[i] == B[i]){
 		int current = q.front();
 		q.pop();
 
-		if(!visited[current]){
-			visited[current] = true;
-		}
-
 		for(int i=1; i<=n; i++){
 			if(jalur[current][i] && !visited[i]){
 				q.push(i);
+				visited[i] = true;
 			}
 		}
 	}
