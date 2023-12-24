@@ -21,7 +21,7 @@ punya gua!
       * [Graph](#graph)
       	* [Depth-First Searh (DFS)](#dfs)
       	* [Breadth-First Search (BFS)](#bfs)
-      	* [Sortest Path BFS](#sortest-path-bfs)
+      	* [Path Counting pada Graph](#path-counting-graph)
 
 <br>
 
@@ -344,14 +344,22 @@ if(A[i] == B[i]){
 ### DFS (Depth-First Search)
 <a id="dfs"></a>
 
+Adalah konsep traversal pada graph yang **memprioritaskan node paling dalam terlebih dahulu**. Langkah yang dilakukan dalam penelusuran DFS:
+
+1. Push node awal kedalam stack
+2. Telusuri tetangga node yang belum dikunjungi, lalu push kedalam stack. Node yang masuk akan menjadi prioritas, sehingga node pada stack sebelumnya harus menunggu dulu. **(prioritaskan node terdalam)**
+3. Sekaligus tandai node yang masuk kedalam stack sebagai node yang sudah dikunjungi
+4. Ulangi sampai semua node terkunjungi
+
 ```cpp
 	stack<int> st;	// simpan node yang belum dikunjungi
 	bool visited[n+1];	// sudah/belum dikunjungi
 	
 	// fill
-	for(int i=1; i<=n; i++) visited[i] = false;	
+	fill(visited, visited+n+1, false);
 	
 	st.push(1);
+	visited[1] = true;
 	while(!st.empty()){
 		int current = st.top();
 		st.pop();
@@ -361,20 +369,28 @@ if(A[i] == B[i]){
 				st.push(i);
 				visited[i] = true;	// setelah ditemukan, langsung tandai
 			}
-		}		
-
+		}	
+	}	
 ```
 
 ### BFS (Breadth-First Search)
 <a id="bfs"></a>
 
+Konsep traversal pada graph yang **memprioritaskan node terdekat**. Langkah yang dilakukan dalam penelusuran BFS:
+
+1. Push node awal kedalam queue
+2. Telusuri tetangga node yang belum dikunjungi, lalu push kedalam queue. Node tersebut akan dikunjungi setelah semua node sebelumnya terkunjungi
+3. Sekaligus tandai node yang masuk kedalam queue sebagai node yang sudah dikunjungi
+4. Ulangi sampai semua node terkunjungi
+
 ```cpp
     queue<int> q;
 	bool visited[n+1];
 	
-	for(int i=1; i<=n; i++) visited[i] = false;
+	fill(visited, visited+n+1, false);
 
 	q.push(1);
+	visited[1] = true;
 	while(!q.empty()){
 		int current = q.front();
 		q.pop();
@@ -388,9 +404,26 @@ if(A[i] == B[i]){
 	}
 
 ```
+### Path Counting pada Graph
+<a id="path-counting-graph"></a>
+
+Tambahkan array baru untuk menyimpan jarak pada suatu node ke node lainnya. Isi array tersebut saat proses push dengan nilai `jarak[node] = jarak[current] + 1`.
+
+Menggunakan *adjacency list*:
+```cpp
+for(int i: adj[current]){
+	if(!visited[i]){
+		st.push(i);
+		visited[i] = true;
+		dist[i] = dist[current] + 1;
+	}
+}
+```
 
 ### Sortest Path BFS
 <a id="sortest-path-bfs"></a>
+
+Untuk mencari sortest path dari node A ke B. Gunakan DFS karena sifatnya menelusuri node lapis demi lapis. Sehingga node yang dikunjungi pasti memiliki jarak terpendek.
 
 ```cpp
     queue<int> q;
