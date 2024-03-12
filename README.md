@@ -457,7 +457,7 @@ cout << typeid(var).id();
 ```
 
 ### Prototype function
-Deklarasi fungsi disebelum main dapat dilakukan dengan cara membuat prototype:
+Deklarasi fungsi disetelah main dapat dilakukan dengan cara membuat prototype:
 ```cpp
 void solve(int a, int b);
 int main(){
@@ -483,18 +483,7 @@ flagName:
 goto flagName;
 ```
 
-### Get each integer
-Use divide and modulo
-```cpp
-int n = 25;
-while(n){
-  digit = n%10;
-  n/=10;
-}
-```
-
 ### Determine its decimal or not
-
 ```cpp
 #include <cmath>
 if(i/3 == floor(i/3)) isDecimal = false;
@@ -518,14 +507,6 @@ sort(pr.begin(), pr.end(), sort_second);
 
 ## Algorithm
 
-### Linear search
-Time complexity: $O(n)$
-```cpp
-for(int i=0; i<n; i++){
-	if(arr[i] == search) isFound = true;
-}
-```
-
 ### Binary search
 Pengurutan seperti halnya mencari kata didalam kamus. 
 Time complexity: $O(log n)$
@@ -542,41 +523,6 @@ while(left<=right and ans==0){
 	else ans = arr[mid];
 }
 ```
-
-### Bubble Sort
-Time complexity: $O(n^2)$
-```cpp
-for(int i=0; i<n; i++){
-	for(int j=i+1; j<n; j++){
-		if(arr[j] < arr[i]){
-			temp = arr[i]
-			arr[i] = arr[j]
-			arr[j] = temp
-		}
-	}
-}
-```
-
-### Selection Sort
-Time complexity: $O(n^2)$
-```cpp
-for(int i=0; i<n; i++){
-	smallest = 0;
-	idx = i;
-
-	//find smallest value
-	for(int j=i+1; j<n; j++){
-		if(arr[j] < smallest){
-			smallest = arr[j];
-			idx = j;  //save the index
-		}
-		temp = arr[i];
-		arr[i] = arr[idx];
-		arr[idx] = temp;
-	}
-}
-```
-
 ### Sorting with Parameter Function
 ```cpp
 bool sc(int a, int b){
