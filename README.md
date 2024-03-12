@@ -36,8 +36,8 @@ Contoh persoalan:
 unik. Berapa banyak triplet hp,q,ri berbeda yang memenuhi persamaan tersebut?
 
 Solusi Brute Force:
-Coba semua kemungkinan dengan menggunakan perulangan sebanyak n (banyaknya variabel). Karena n=3, maka waktu kompleksitasnya $$O(n^3)$$
-- Algoritma dapat doptimasi dengan cara: setelah menentukan nilai p dan q, tentukan nilai r dengan -(p+q). Lalu tentukan apakah nilai r ada di anggota himpunan dengan menggunakan binary search agar lebih cepat. Jika ada maka sudah pasti bernilai 0, jadi simpan hasil dari p+q+r. Waktu kompleksitasnya $$O(n^2 log n)$$
+Coba semua kemungkinan dengan menggunakan perulangan sebanyak n (banyaknya variabel). Karena n=3, maka waktu kompleksitasnya $O(n^3)$
+- Algoritma dapat doptimasi dengan cara: setelah menentukan nilai p dan q, tentukan nilai r dengan -(p+q). Lalu tentukan apakah nilai r ada di anggota himpunan dengan menggunakan binary search agar lebih cepat. Jika ada maka sudah pasti bernilai 0, jadi simpan hasil dari p+q+r. Waktu kompleksitasnya $O(n^2 log n)$
 
 ### > Brute Force Permutasi
 <a id="brute-force-permutasi"></a>
@@ -169,11 +169,11 @@ for(int i=1; i<n; i++){
 #### Coin Change
 <a id="coin-change"></a>
 
-> Diberikan 3 jenis koin yaitu [1,6,10] yang jumlahnya tak terbatas. Tentukan banyaknya koin minimal yang bisa ditukar dengan $$12$$ rupiah
+> Diberikan 3 jenis koin yaitu [1,6,10] yang jumlahnya tak terbatas. Tentukan banyaknya koin minimal yang bisa ditukar dengan $12$ rupiah
 
 ::Jawaban: 2::
 
-- _Subproblem:_ $$dp[i]$$ adalah penukaran uang sebanyak $$n-dp[j]$$
+- _Subproblem:_ $dp[i]$ adalah penukaran uang sebanyak $n-dp[j]$
 - _Base Case_: saat uang bernilai 0, maka tidak ada koin yang ditukar (return 0)
 
 ```cpp
@@ -241,21 +241,21 @@ memasukkan beberapa barang ke dalam tas, sehingga dihasilkan harga sebanyak mung
 
 ::Jawaban: 15::
 
-Untuk menyelesaikannya dibutuhkan $$dp[i][c]$$. Dimana $$i$$ menyatakan jumlah barang yang tersedia dari barang ke-1 sampai i. Dan $$j$$ menyatakan kapasitas tas dimulai dari 0
+Untuk menyelesaikannya dibutuhkan $dp[i][c]$. Dimana $i$ menyatakan jumlah barang yang tersedia dari barang ke-1 sampai i. Dan $j$ menyatakan kapasitas tas dimulai dari 0
 
-Terdapat 2 pilihan, yaitu **ambil** barang atau **tidak**. Saat barang diambil maka $$i$$ akan berkurang 1 dan mendapatkan harga barang tersebut. Saat barang tidak diambil, maka $$i$$ juga berkurang 1 karena barang diskip. Tetapi tidak mendapatkan harga. Dapat dituliskan sebagai berikut:
+Terdapat 2 pilihan, yaitu **ambil** barang atau **tidak**. Saat barang diambil maka $i$ akan berkurang 1 dan mendapatkan harga barang tersebut. Saat barang tidak diambil, maka $i$ juga berkurang 1 karena barang diskip. Tetapi tidak mendapatkan harga. Dapat dituliskan sebagai berikut:
 ```cpp
 ambil = dp[i-1][c - wi] + vi
 notAmbil = dp[i-1][c]
 ```
 
-- _Subproblem:_ $$dp[i][j]$$ adalah harga maksimal saat tersedia barang 1 sampai i, dan kapasitas tas sebanyak j gram
+- _Subproblem:_ $dp[i][j]$ adalah harga maksimal saat tersedia barang 1 sampai i, dan kapasitas tas sebanyak j gram
 - _Base case:_ Saat kapasitas tas 0 gram, maka tidak ada barang yang bisa dimasukkan (return 0)
 
 **Algoritma penyelesaian:**
-1. Isi semua $$dp[i][0]$$ dengan 0 sebagai base case.
-2. Gunakan outer loop untuk mengisi $$i$$ sebagai banyak barang yang akan dicek, dan inner loop untuk mengisi $$j$$ dimulai dari 1 sampai tepat $$c$$
-3. Counter problem saat $$i-1 < 0$$ karena akan out of bounds.
+1. Isi semua $dp[i][0]$ dengan 0 sebagai base case.
+2. Gunakan outer loop untuk mengisi $i$ sebagai banyak barang yang akan dicek, dan inner loop untuk mengisi $j$ dimulai dari 1 sampai tepat $c$
+3. Counter problem saat $i-1 < 0$ karena akan out of bounds.
 
 ```cpp
 int dp[n][c+1];
@@ -296,11 +296,11 @@ panjang string terpanjang yang merupakan subsequence dari A dan B? <br> A = "aja
 
 Gunakan konsep _character cutoff_ mulai dari subproblem terkecil, yaitu saat hanyan tersedia 1 character pada masing-masing string (A="a", B="b"). Lalu meningkat sampai tersedia semua karakter.
 
-Gunakan $$dp[i][j]$$, dimana $$i$$ merupakan jumlah karakter yang tersedia untuk A dari indeks 0 sampai $$i$$. Dan begitu juga $$j$$ untuk B.
+Gunakan $dp[i][j]$, dimana $i$ merupakan jumlah karakter yang tersedia untuk A dari indeks 0 sampai $i$. Dan begitu juga $j$ untuk B.
 
 Terdapat 2 kondisi, yaitu ketika karakter sama dan tidak sama.
-- Jika $$A[i] == B[j]$$, maka LCS ditambah 1. Karena karakter sama, maka kita dapat melanjutkan cek ke karakter sebelumnya (backtracking).
-- Jika $$A[i] ≠  B[j]$$, maka coba cek $$A[i]$$ dengan $$B[j-1]$$ dan $$B[j]$$ dengan $$A[i-1]$$ _(character cutoff)_. Dan cari LCS maksimalnya.
+- Jika $A[i] == B[j]$, maka LCS ditambah 1. Karena karakter sama, maka kita dapat melanjutkan cek ke karakter sebelumnya (backtracking).
+- Jika $A[i] ≠  B[j]$, maka coba cek $A[i]$ dengan $B[j-1]$ dan $B[j]$ dengan $A[i-1]$ _(character cutoff)_. Dan cari LCS maksimalnya.
 
 ```cpp
 if(A[i] == B[i]){
@@ -312,8 +312,8 @@ if(A[i] == B[i]){
 }
 ```
 
-- _Subproblem:_ $$dp[i][j]$$ adalah LCS saat A hanya tersedia karakter 0 sampai $$i$$. Dan B hanya tersedia karkter 0 sampai $$j$$
-- _Basecase:_ Saat $$i=0$$ atau $$j=0$$ maka tidak bisa mendapatkan subsequence, karena tidak ada karakter. (return 0)
+- _Subproblem:_ $dp[i][j]$ adalah LCS saat A hanya tersedia karakter 0 sampai $i$. Dan B hanya tersedia karkter 0 sampai $j$
+- _Basecase:_ Saat $i=0$ atau $j=0$ maka tidak bisa mendapatkan subsequence, karena tidak ada karakter. (return 0)
 
 ```cpp
 	string a = "ajaib";
@@ -519,7 +519,7 @@ sort(pr.begin(), pr.end(), sort_second);
 ## Algorithm
 
 ### Linear search
-Time complexity: $$O(n)$$
+Time complexity: $O(n)$
 ```cpp
 for(int i=0; i<n; i++){
 	if(arr[i] == search) isFound = true;
@@ -528,7 +528,7 @@ for(int i=0; i<n; i++){
 
 ### Binary search
 Pengurutan seperti halnya mencari kata didalam kamus. 
-Time complexity: $$O(log n)$$
+Time complexity: $O(log n)$
 ```cpp
 mid = 0;
 ans = 0;
@@ -544,7 +544,7 @@ while(left<=right and ans==0){
 ```
 
 ### Bubble Sort
-Time complexity: $$O(n^2)$$
+Time complexity: $O(n^2)$
 ```cpp
 for(int i=0; i<n; i++){
 	for(int j=i+1; j<n; j++){
@@ -558,7 +558,7 @@ for(int i=0; i<n; i++){
 ```
 
 ### Selection Sort
-Time complexity: $$O(n^2)$$
+Time complexity: $O(n^2)$
 ```cpp
 for(int i=0; i<n; i++){
 	smallest = 0;
@@ -600,7 +600,7 @@ for(int i=0; i<s.length(); i++){
 
 
 ### Maximum subarray sum
-Basically, it needs 2 iteration. Time complexity: $$O(n^2)$$
+Basically, it needs 2 iteration. Time complexity: $O(n^2)$
 ```cpp
 int ans = 0;
 for(int i=0; i<n; i++){
@@ -612,7 +612,7 @@ for(int i=0; i<n; i++){
 }
 ```
 
-Algorithm with single iteration. Time complexity: $$O(n)$$
+Algorithm with single iteration. Time complexity: $O(n)$
 ```cpp
 int best = 0, sum = 0;
 for(int i=0; i<n; i++){
@@ -637,7 +637,7 @@ int arr[] = {1,2,3}, ps[n];
 partial_sum(arr, arr+n, ps[n]) //hasil akan disimpan di array ps
 ```
 
-Untuk mengakses jumlah subarray $$l$$ sampai $$r$$, gunakan perhitungan:
+Untuk mengakses jumlah subarray $l$ sampai $r$, gunakan perhitungan:
 ```cpp
 int subarray = ps[r] - ps[l-1]
 ```
