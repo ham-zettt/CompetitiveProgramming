@@ -505,6 +505,36 @@ vector<pair<int,int>> pr;
 sort(pr.begin(), pr.end(), sort_second);
 ```
 
+### Return array function with pointer
+```cpp
+int * generate(int arr[], int size){
+	for(int i=0; i<size; i++){
+		arr[i] = i+1;
+	}
+	return arr;
+}
+
+int main(){
+    int *arr = generate();
+}
+```
+
+## Data Structure Type
+### Map
+menyimpan data menurut key dan value nya.
+```cpp
+map<string, int> mp;
+mp["john"] = 98;
+mp["marko"] = 72;
+
+// loop with iterator
+// first for the key, second for the value
+for(auto it=mp.begin(); it!=mp.end(); it++){
+	cout << it->first << " " << it->second << endl;
+}
+```
+
+--- 
 ## Algorithm
 
 ### Binary search

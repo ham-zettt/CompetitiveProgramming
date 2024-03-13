@@ -16,5 +16,16 @@ typedef long long ll;
 #define EACHpair(pr) for(auto& a: pr){ cout << a.first << " " << a.second << endl; }
 
 int main(){
-	
+	int n, a, temp;
+	cin >> n;
+
+	while(n--){
+		cin >> a;
+		temp = 0;
+		while(a){
+			temp = temp*10 + a%10;
+			a /= 10;
+		}
+		cout << temp << endl;
+	}
 }
