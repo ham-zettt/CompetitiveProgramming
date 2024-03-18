@@ -3,94 +3,104 @@ punya gua!
 -ilhamz
 
 # Rangkuman Competitive Programming
+
 <a id="rangkuman-competitive-programming"></a>
 
-   * [Rangkuman Competitive Programming](#rangkuman-competitive-programming)
-      * [Brute Force](#brute-force)
-		* [Permutasi](#brute-force-permutasi)
-      	* [Kombinasi](#brute-force-kombinasi)
-      * [Greedy](#greedy)
-      * [Dynamic Programming](#dp)
-      	* [Konsep DP](#konsep-dp)
-      	* [Contoh Problem DP](#contoh-problem-dynamic-programming)
-      		* [Longest Increasing Subsequence (LIS)](#lis)
-      		* [Coin Change](#coin-change)
-      		* [Path Counting](#path-counting)
-      		* [0/1 Knapsack Problem](#knapsack-problem)
-      		* [Longest Common Subsequence (LCS)](#lcs)
-      * [Graph](#graph)
-      	* [Depth-First Searh (DFS)](#dfs)
-      	* [Breadth-First Search (BFS)](#bfs)
-      	* [Path Counting pada Graph](#path-counting-graph)
+* [Rangkuman Competitive Programming](#rangkuman-competitive-programming)
+  * [Brute Force](#brute-force)
+    * [Permutasi](#brute-force-permutasi)
+      * [Kombinasi](#brute-force-kombinasi)
+  * [Greedy](#greedy)
+  * [Dynamic Programming](#dp)
+    * [Konsep DP](#konsep-dp)
+    * [Contoh Problem DP](#contoh-problem-dynamic-programming)
+      * [Longest Increasing Subsequence (LIS)](#lis)
+      * [Coin Change](#coin-change)
+      * [Path Counting](#path-counting)
+      * [0/1 Knapsack Problem](#knapsack-problem)
+      * [Longest Common Subsequence (LCS)](#lcs)
+  * [Graph](#graph)
+    * [Depth-First Searh (DFS)](#dfs)
+    * [Breadth-First Search (BFS)](#bfs)
+    * [Path Counting pada Graph](#path-counting-graph)
 
 <br>
 
-
 ## Brute Force
+
 <a id="brute-force"></a>
 
 suatu strategi dengan cara **mecoba semua kemungkinan** (complete search). Sehingga pasti menemukan solusi yang diharapkan, tetapi memiliki waktu yang relatif lama.
 
 Contoh persoalan:
+
 > Diberikan sebuah persamaan: p+q+r = 0. Masing-masing dari p, q, dan r harus merupakan anggota dari {a1,a2,...,aN}. Diketahui pula bahwa semua nilai {a1,a2,...,aN}
-unik. Berapa banyak triplet hp,q,ri berbeda yang memenuhi persamaan tersebut?
+> unik. Berapa banyak triplet hp,q,ri berbeda yang memenuhi persamaan tersebut?
 
 Solusi Brute Force:
 Coba semua kemungkinan dengan menggunakan perulangan sebanyak n (banyaknya variabel). Karena n=3, maka waktu kompleksitasnya $O(n^3)$
+
 - Algoritma dapat doptimasi dengan cara: setelah menentukan nilai p dan q, tentukan nilai r dengan -(p+q). Lalu tentukan apakah nilai r ada di anggota himpunan dengan menggunakan binary search agar lebih cepat. Jika ada maka sudah pasti bernilai 0, jadi simpan hasil dari p+q+r. Waktu kompleksitasnya $O(n^2 log n)$
 
 ### > Brute Force Permutasi
+
 <a id="brute-force-permutasi"></a>
 
 Untuk menampilkan semua permutasi bisa menggunakan iterasi biasa, tetapi jumlah iterasi tidak bisa ditentukan, karena mengikuti jumlah data (n). Maka solusinya adalah rekursif:
+
 ```cpp
 char catat[n];
 bool pernah[n];  // all false
 
 void permutation(int depth){
     // base case
-	if(depth == n){
-  		for(int i=0; i<n; i++){    // loop hasil akhir
-			cout << catat[i];
-		}
-		cout << endl;
-		
-	} else {
-		for(int i=0; i<n; i++){
-    		// sebelum masuk ke rekursif, cek apakah
-    		// karakter sudah pernah digunakan. Agar
-    		// tidak ada digit berulang
-			if(!pernah[i]){
-				pernah[i] = true;
-				catat[depth] = arr[i];  // catat hasil permutasi
-				permutation(depth + 1);
-				pernah[i] = false;  // reset untuk depth lainnya
-			}
-		}
-	}
+    if(depth == n){
+          for(int i=0; i<n; i++){    // loop hasil akhir
+            cout << catat[i];
+        }
+        cout << endl;
+
+    } else {
+        for(int i=0; i<n; i++){
+            // sebelum masuk ke rekursif, cek apakah
+            // karakter sudah pernah digunakan. Agar
+            // tidak ada digit berulang
+            if(!pernah[i]){
+                pernah[i] = true;
+                catat[depth] = arr[i];  // catat hasil permutasi
+                permutation(depth + 1);
+                pernah[i] = false;  // reset untuk depth lainnya
+            }
+        }
+    }
 }
 ```
+
 Dimulai dari `permutation(0)`, dari situ akan bercabang sebanyak n, dan seterusnya.
 
 ### > Brute Force Kombinasi
+
 <a id="brute-force-kombinasi"></a>
 
 untuk melakukan kombinasi, cukup mengubah perulangan for pada bagian rekursi. Ubah agar perulangan dimulai dari _angka yang dicatat + 1_. Jadi angka sebelumnya tidak akan dicatat lagi. Sehingga _boolean pernah_ tidak perlu dipakai
 `i = catat[depth-1] + 1`
 
 ## Greedy
+
 <a id="greedy"></a>
 
 suatu strategi dengan **mencari solusi paling optimal hingga ke subproblem**, sehingga memiliki waktu eksekusi yang cepat dan mudah diimplementasikan. 
 
 Greedy dapat dilakukan saat:
+
 - Solusi optimal dapat ditentukan dari subproblem
 - Memiliki _Greedy Choice_
 
 **Greedy choice** merupakan langkah yang akan menghasilkan solusi optimal. Contoh: 
+
 > Anda ingin menukar uang Rp12.000 dengan lembaran uang kertas Rp5.000,
-Rp2.000, dan Rp1.000. Anda ingin menukar dengan jumlah lembaran sesedikit
-mungkin.
+> Rp2.000, dan Rp1.000. Anda ingin menukar dengan jumlah lembaran sesedikit
+> mungkin.
 
 - Problem: proses penukaran uang (n)
 - Subproblemnya: proses penukaran selanjutnya setelah menukar uang ke-n
@@ -105,23 +115,27 @@ Tidak semua persoalan dapat diselesaikan dengan Greedy. Sesuai persoalan diatas,
 - Solusi optimal:  Rp4.000, Rp4.000, Rp4.000
 
 ## Dynamic Programming
+
 <a id="dp"></a>
 
 Mirip dengan brute force tetapi lebih dioptimasi. Masalah yang akan diselesaikan harus memiliki subproblem, lalu akan dicoba satu-persatu.
 
 ### Konsep DP
+
 <a id="konsep-dp"></a>
 
 - **_Top-Down_**.
-Metode ini dikerjakan secara rekursif dari problem utama menuju subproblem lainnya. Catat nilai yang sudah dihitung (memoisasi) 
+  Metode ini dikerjakan secara rekursif dari problem utama menuju subproblem lainnya. Catat nilai yang sudah dihitung (memoisasi) 
 
 - **_Bottom-Up_**.
-Metode ini dikerjakan secara iteratif dari subproblem menuju problem utama. Hasil perhitungan subproblem akan dicatat didalam array _dp[ ]_.
+  Metode ini dikerjakan secara iteratif dari subproblem menuju problem utama. Hasil perhitungan subproblem akan dicatat didalam array _dp[ ]_.
 
 ### Contoh Problem Dynamic Programming:
+
 <a id="contoh-problem-dp"></a>
 
 #### Longest Increasing Subsequence (LIS)
+
 <a id="lis"></a>
 
 > Carilah subsequence angka terpanjang secara ascending dari [3,1,8,2,5] !
@@ -140,6 +154,7 @@ LIS[i] = max(LIS[0], LIS[1], ..., LIS[n]) + 1
 ```
 
 **Algoritma Penyelesaian :**
+
 1. Gunakan outer loop untuk mengisi LIS[i] dari 1 hingga n, sekaligus menjalankan nilai arr[i] untuk dibandingkan
 2. Gunakan inner loop untuk cek setiap LIS sebelum i
 3. Jika `arr[i] > arr[j]` maka LIS[i] **ditambah satu**, karena arr[j] juga termasuk Increasing Subsequence. Jika tidak maka biarkan.
@@ -167,6 +182,7 @@ for(int i=1; i<n; i++){
 ```
 
 #### Coin Change
+
 <a id="coin-change"></a>
 
 > Diberikan 3 jenis koin yaitu [1,6,10] yang jumlahnya tak terbatas. Tentukan banyaknya koin minimal yang bisa ditukar dengan $12$ rupiah
@@ -181,18 +197,20 @@ int dp[n+1];
 dp[0] = 0;
 
 for(int i=1; i<=n; i++){
-	int minn = 1e5;
-	for(int j=0; j<m; j++){
-		if(i >= coin[j]){
-			minn = min(minn, dp[i-coin[j]] + 1);
-		}
-	}
-	dp[i] = minn;
+    int minn = 1e5;
+    for(int j=0; j<m; j++){
+        if(i >= coin[j]){
+            minn = min(minn, dp[i-coin[j]] + 1);
+        }
+    }
+    dp[i] = minn;
 }
 ```
+
 **Selengkapnya ada di Buku TOKI Competitive Programming**
 
 #### Path Counting
+
 <a id="path-counting"></a>
 
 > Hitunglah total jalur dari _start_ menuju _end_, jika gerakan yang diperbolehkan hanya ke bawah dan ke kanan
@@ -212,6 +230,7 @@ if(dp[i][j-1] not out of bounds) dp[i][j] += dp[i][j-1]
 ```
 
 **Algoritma Penyelesaian :**
+
 1. Gunakan outer loop dan inner loop untuk mengisi dp[i][j]
 2. Counter problem saat cek data out of bounds
 
@@ -220,22 +239,24 @@ if(dp[i][j-1] not out of bounds) dp[i][j] += dp[i][j-1]
 
 dp[0][0] = 1;
 for(int i=0; i<n; i++){
-	for(int j=0; j<n; j++){
-     	// asumsikan jalur yang tersedia adalah bernilai 1
-		if(path[i][j] == 1 && (i>0 || j>0)){
-			if(i-1 >= 0 && path[i-1][j] != 0) dp[i][j] += dp[i-1][j];
-			if(j-1 >= 0 && path[i][j-1] != 0) dp[i][j] += dp[i][j-1];
-		}
-	}
+    for(int j=0; j<n; j++){
+         // asumsikan jalur yang tersedia adalah bernilai 1
+        if(path[i][j] == 1 && (i>0 || j>0)){
+            if(i-1 >= 0 && path[i-1][j] != 0) dp[i][j] += dp[i-1][j];
+            if(j-1 >= 0 && path[i][j-1] != 0) dp[i][j] += dp[i][j-1];
+        }
+    }
 }
 
 cout << dp[n-1][n-1];
 ```
 
 #### 0/1 Knapsack Problem
+
 <a id="knapsack-problem"></a>
+
 > Diberikan N buah barang. Barang ke-i memiliki harga vi rupiah dan berat wi gram. Kita memiliki tas yang berkapasitas C gram. Kita ingin
-memasukkan beberapa barang ke dalam tas, sehingga dihasilkan harga sebanyak mungkin!
+> memasukkan beberapa barang ke dalam tas, sehingga dihasilkan harga sebanyak mungkin!
 
 ![dawae](.img/knapsack.png)
 
@@ -244,6 +265,7 @@ memasukkan beberapa barang ke dalam tas, sehingga dihasilkan harga sebanyak mung
 Untuk menyelesaikannya dibutuhkan $dp[i][c]$. Dimana $i$ menyatakan jumlah barang yang tersedia dari barang ke-1 sampai i. Dan $j$ menyatakan kapasitas tas dimulai dari 0
 
 Terdapat 2 pilihan, yaitu **ambil** barang atau **tidak**. Saat barang diambil maka $i$ akan berkurang 1 dan mendapatkan harga barang tersebut. Saat barang tidak diambil, maka $i$ juga berkurang 1 karena barang diskip. Tetapi tidak mendapatkan harga. Dapat dituliskan sebagai berikut:
+
 ```cpp
 ambil = dp[i-1][c - wi] + vi
 notAmbil = dp[i-1][c]
@@ -253,6 +275,7 @@ notAmbil = dp[i-1][c]
 - _Base case:_ Saat kapasitas tas 0 gram, maka tidak ada barang yang bisa dimasukkan (return 0)
 
 **Algoritma penyelesaian:**
+
 1. Isi semua $dp[i][0]$ dengan 0 sebagai base case.
 2. Gunakan outer loop untuk mengisi $i$ sebagai banyak barang yang akan dicek, dan inner loop untuk mengisi $j$ dimulai dari 1 sampai tepat $c$
 3. Counter problem saat $i-1 < 0$ karena akan out of bounds.
@@ -262,35 +285,36 @@ int dp[n][c+1];
 for(int i=0; i<n; i++) dp[i][0] = 0;  // base case
 
 for(int i=0; i<n; i++){
-	int ambil=0, notAmbil=0;
-	for(int j=1; j<=c; j++){
+    int ambil=0, notAmbil=0;
+    for(int j=1; j<=c; j++){
 
-		// counter problem saat i = 0
-		if(i == 0){
-			if(j >= pr[i].second){	// ambil
-				dp[i][j] = pr[i].first;
-			} else {	// tidak ambil
-				dp[i][j] = 0;
-			}
+        // counter problem saat i = 0
+        if(i == 0){
+            if(j >= pr[i].second){    // ambil
+                dp[i][j] = pr[i].first;
+            } else {    // tidak ambil
+                dp[i][j] = 0;
+            }
 
-		} else {
-			if(j >= pr[i].second){
-				ambil = dp[i-1][j-pr[i].second] + pr[i].first;
-			}
-			notAmbil = dp[i-1][j];
-			dp[i][j] = max(ambil, notAmbil);
-		}
-	}
+        } else {
+            if(j >= pr[i].second){
+                ambil = dp[i-1][j-pr[i].second] + pr[i].first;
+            }
+            notAmbil = dp[i-1][j];
+            dp[i][j] = max(ambil, notAmbil);
+        }
+    }
 }
 
 cout << dp[n-1][c+1-1];
 ```
 
 #### Longest Common Subsequence (LCS)
+
 <a id="lcs"></a>
 
 > Diberikan 2 buah string A dan B. Panjang kedua string tidak harus sama. Berapa
-panjang string terpanjang yang merupakan subsequence dari A dan B? <br> A = "ajaib" <br> B = "badai"
+> panjang string terpanjang yang merupakan subsequence dari A dan B? <br> A = "ajaib" <br> B = "badai"
 
 ::Jawaban: 3 (aai)::
 
@@ -299,6 +323,7 @@ Gunakan konsep _character cutoff_ mulai dari subproblem terkecil, yaitu saat han
 Gunakan $dp[i][j]$, dimana $i$ merupakan jumlah karakter yang tersedia untuk A dari indeks 0 sampai $i$. Dan begitu juga $j$ untuk B.
 
 Terdapat 2 kondisi, yaitu ketika karakter sama dan tidak sama.
+
 - Jika $A[i] == B[j]$, maka LCS ditambah 1. Karena karakter sama, maka kita dapat melanjutkan cek ke karakter sebelumnya (backtracking).
 - Jika $A[i] ≠  B[j]$, maka coba cek $A[i]$ dengan $B[j-1]$ dan $B[j]$ dengan $A[i-1]$ _(character cutoff)_. Dan cari LCS maksimalnya.
 
@@ -316,32 +341,63 @@ if(A[i] == B[i]){
 - _Basecase:_ Saat $i=0$ atau $j=0$ maka tidak bisa mendapatkan subsequence, karena tidak ada karakter. (return 0)
 
 ```cpp
-	string a = "ajaib";
-	string b = "badai";
-	int m = a.length();
-	int n = b.length();
-	
-	int dp[m+1][n+1];
- 	for(int i=0; i<=m; i++) dp[i][0] = 0;  //basecase
-	for(int i=0; i<=n; i++) dp[0][i] = 0;  //basecase
+    string a = "ajaib";
+    string b = "badai";
+    int m = a.length();
+    int n = b.length();
 
-	for(int i=1; i<=m; i++){
-		for(int j=1; j<=n; j++){
-			if(a[i-1] == b[j-1]){  // -1 karena cek indeks dari 0
-				dp[i][j] = dp[i-1][j-1] + 1;
-			} else {
-				int cutA = dp[i][j-1]; 
-				int cutB = dp[i-1][j];
-				dp[i][j] = max(cutA, cutB);
-			}
-		}
-	}
+    int dp[m+1][n+1];
+     for(int i=0; i<=m; i++) dp[i][0] = 0;  //basecase
+    for(int i=0; i<=n; i++) dp[0][i] = 0;  //basecase
+
+    for(int i=1; i<=m; i++){
+        for(int j=1; j<=n; j++){
+            if(a[i-1] == b[j-1]){  // -1 karena cek indeks dari 0
+                dp[i][j] = dp[i-1][j-1] + 1;
+            } else {
+                int cutA = dp[i][j-1]; 
+                int cutB = dp[i-1][j];
+                dp[i][j] = max(cutA, cutB);
+            }
+        }
+    }
 ```
 
 ## Graph
+
 <a id="graph"></a>
 
+### Representasi Graph
+
+- **Adjenct List**
+  
+  Masing-masing node disimpan dalam array. Setiap array menyimpan vector berisi node yang terhubung
+  
+  ```cpp
+  // untuk graf tidak berbobot
+  vector<int> adj[N];
+  adj[1].push_back(3); //node1 ke node3
+  adj[2].push_back(1);
+  adj[4].push_back(2); 
+  
+  // untuk graf berbobot
+  vector<pair<int,int>> adj[N];
+  adj[1].push_back({4,5});
+  adj[2].push_back({2,1});
+  adj[4].push_back({4,2});
+  ```
+
+- **Adjency Matix**
+  Baris untuk node, dan kolom untuk node tujuan. Value matriks berisi nilai boolean yang menandakan node terhubung atau tidak
+  
+  ```cpp
+  int adj[N][N];
+  adj[1][2] = 1;
+  adj[3][1] = 1;
+  ```
+
 ### DFS (Depth-First Search)
+
 <a id="dfs"></a>
 
 Adalah konsep traversal pada graph yang **memprioritaskan node paling dalam terlebih dahulu**. Langkah yang dilakukan dalam penelusuran DFS:
@@ -352,28 +408,30 @@ Adalah konsep traversal pada graph yang **memprioritaskan node paling dalam terl
 4. Ulangi sampai semua node terkunjungi
 
 ```cpp
-	stack<int> st;	// simpan node yang belum dikunjungi
-	bool visited[n+1];	// sudah/belum dikunjungi
-	
-	// fill
-	fill(visited, visited+n+1, false);
-	
-	st.push(1);
-	visited[1] = true;
-	while(!st.empty()){
-		int current = st.top();
-		st.pop();
+    stack<int> st;    // simpan node yang belum dikunjungi
+    bool visited[n+1];    // sudah/belum dikunjungi
 
-		for(int i=1; i<=n; i++){	// cari semua node tetangga yg belum dikujungi
-			if(jalur[current][i] && !visited[i]){
-				st.push(i);
-				visited[i] = true;	// setelah ditemukan, langsung tandai
-			}
-		}	
-	}	
+    // fill
+    fill(visited, visited+n+1, false);
+
+    st.push(1);
+    visited[1] = true;
+    while(!st.empty()){
+        int current = st.top();
+        st.pop();
+        cout << "node-" << current;
+
+        for(int i=1; i<=n; i++){    // cari semua node tetangga yg belum dikujungi
+            if(jalur[current][i] && !visited[i]){
+                st.push(i);
+                visited[i] = true;    // setelah ditemukan, langsung tandai
+            }
+        }    
+    }    
 ```
 
 ### BFS (Breadth-First Search)
+
 <a id="bfs"></a>
 
 Konsep traversal pada graph yang **memprioritaskan node terdekat**. Langkah yang dilakukan dalam penelusuran BFS:
@@ -385,65 +443,69 @@ Konsep traversal pada graph yang **memprioritaskan node terdekat**. Langkah yang
 
 ```cpp
     queue<int> q;
-	bool visited[n+1];
-	
-	fill(visited, visited+n+1, false);
+    bool visited[n+1];
 
-	q.push(1);
-	visited[1] = true;
-	while(!q.empty()){
-		int current = q.front();
-		q.pop();
+    fill(visited, visited+n+1, false);
 
-		for(int i=1; i<=n; i++){
-			if(jalur[current][i] && !visited[i]){
-				q.push(i);
-				visited[i] = true;
-			}
-		}
-	}
+    q.push(1);
+    visited[1] = true;
+    while(!q.empty()){
+        int current = q.front();
+        q.pop();
+        cout << "node-" << current;
 
+        for(int i=1; i<=n; i++){
+            if(jalur[current][i] && !visited[i]){
+                q.push(i);
+                visited[i] = true;
+            }
+        }
+    }
 ```
+
 ### Path Counting pada Graph
+
 <a id="path-counting-graph"></a>
 
 Tambahkan array baru untuk menyimpan jarak pada suatu node ke node lainnya. Isi array tersebut saat proses push dengan nilai `jarak[node] = jarak[current] + 1`.
 
 Menggunakan *adjacency list*:
+
 ```cpp
 for(int i: adj[current]){
-	if(!visited[i]){
-		st.push(i);
-		visited[i] = true;
-		dist[i] = dist[current] + 1;
-	}
+    if(!visited[i]){
+        st.push(i);
+        visited[i] = true;
+        dist[i] = dist[current] + 1;
+    }
 }
 ```
 
 ### Sortest Path BFS
+
 <a id="sortest-path-bfs"></a>
 
 Untuk mencari sortest path dari node A ke B. Gunakan DFS karena sifatnya menelusuri node lapis demi lapis. Sehingga node yang dikunjungi pasti memiliki jarak terpendek.
 
 ```cpp
     queue<int> q;
-	int time[n+1];
+    int time[n+1];
 
-	for(int i=1; i<=n; i++) time[i] = -1;
+    for(int i=1; i<=n; i++) time[i] = -1;
 
-	q.push(1);
-	time[1] = 0;
-	while(!q.empty()){
-		int current = q.front();
-		q.pop();
+    q.push(1);
+    time[1] = 0;
+    while(!q.empty()){
+        int current = q.front();
+        q.pop();
 
-		for(int i=1; i<=n; i++){
-			if(jalur[current][i] && time[i] == -1){
-				q.push(i);
-				time[i] = time[current] + 1;
-			}
-		}
-	}
+        for(int i=1; i<=n; i++){
+            if(jalur[current][i] && time[i] == -1){
+                q.push(i);
+                time[i] = time[current] + 1;
+            }
+        }
+    }
 ```
 
 <br>
@@ -451,20 +513,24 @@ Untuk mencari sortest path dari node A ke B. Gunakan DFS karena sifatnya menelus
 # Rangkuman C++
 
 ## For Your Information
+
 ### Print Variable type
+
 ```cpp
 cout << typeid(var).id();
 ```
 
 ### Prototype function
+
 Deklarasi fungsi disetelah main dapat dilakukan dengan cara membuat prototype:
+
 ```cpp
 void solve(int a, int b);
 int main(){
-	...
+    ...
 }
 void solve(int a, int b){
-	...
+    ...
 }
 ```
 
@@ -475,7 +541,9 @@ getline(cin, input);
 ```
 
 ### _goto_ Function
+
 Go to the spesific flag
+
 ```cpp
 flagName:
   print("go to here");
@@ -484,21 +552,24 @@ goto flagName;
 ```
 
 ### Determine its decimal or not
+
 ```cpp
 #include <cmath>
 if(i/3 == floor(i/3)) isDecimal = false;
 ```
 
 ### Determine its a perfect square
+
 ```cpp
 temp = round(sqrt(i));
 if(temp*temp == i) isPerfect = true;
 ```
 
 ### Sort pair based on second (boolean)
+
 ```cpp
 bool sort_second(pair<int, int> &a, pair<int, int> &b){
-	return a.second < b.second;
+    return a.second < b.second;
 }
 
 vector<pair<int,int>> pr;
@@ -506,12 +577,13 @@ sort(pr.begin(), pr.end(), sort_second);
 ```
 
 ### Return array function with pointer
+
 ```cpp
 int * generate(int arr[], int size){
-	for(int i=0; i<size; i++){
-		arr[i] = i+1;
-	}
-	return arr;
+    for(int i=0; i<size; i++){
+        arr[i] = i+1;
+    }
+    return arr;
 }
 
 int main(){
@@ -520,8 +592,11 @@ int main(){
 ```
 
 ## Data Structure Type
+
 ### Map
+
 menyimpan data menurut key dan value nya.
+
 ```cpp
 map<string, int> mp;
 mp["john"] = 98;
@@ -530,16 +605,19 @@ mp["marko"] = 72;
 // loop with iterator
 // first for the key, second for the value
 for(auto it=mp.begin(); it!=mp.end(); it++){
-	cout << it->first << " " << it->second << endl;
+    cout << it->first << " " << it->second << endl;
 }
 ```
 
 --- 
+
 ## Algorithm
 
 ### Binary search
+
 Pengurutan seperti halnya mencari kata didalam kamus. 
 Time complexity: $O(log n)$
+
 ```cpp
 mid = 0;
 ans = 0;
@@ -547,36 +625,41 @@ left = 0;
 right = arr.length()-1;
 
 while(left<=right and ans==0){
-	mid = (left+right) / 2;
-	if(search<arr[mid]) right = mid-1;
-	else if(search>arr[mid]) left = mid+1;
-	else ans = arr[mid];
+    mid = (left+right) / 2;
+    if(search<arr[mid]) right = mid-1;
+    else if(search>arr[mid]) left = mid+1;
+    else ans = arr[mid];
 }
 ```
+
 ### Sorting with Parameter Function
+
 ```cpp
 bool sc(int a, int b){
-	if(a%b != 0) return true;
-	else return false;
+    if(a%b != 0) return true;
+    else return false;
 
 int main(){
-	sort(arr, arr+n, sc);
+    sort(arr, arr+n, sc);
 }
 ```
 
 ### Print all substring
+
 use s.substr(start, substring length);
+
 ```cpp
 for(int i=0; i<s.length(); i++){
-		for(int j=1; j<=s.length()-i; j++){
-			cout << s.substr(i,j) << endl;
-		}
-	}
+        for(int j=1; j<=s.length()-i; j++){
+            cout << s.substr(i,j) << endl;
+        }
+    }
 ```
 
-
 ### Maximum subarray sum
+
 Basically, it needs 2 iteration. Time complexity: $O(n^2)$
+
 ```cpp
 int ans = 0;
 for(int i=0; i<n; i++){
@@ -589,6 +672,7 @@ for(int i=0; i<n; i++){
 ```
 
 Algorithm with single iteration. Time complexity: $O(n)$
+
 ```cpp
 int best = 0, sum = 0;
 for(int i=0; i<n; i++){
@@ -598,7 +682,9 @@ for(int i=0; i<n; i++){
 ```
 
 ### Prefix Sum
+
 Sebuah array yang berisi total setiap elemen array, yang dihitung satu persatu. Contoh [3,4,2,5], prefix-sumnya adalah [3,7,9,14]
+
 ```cpp
 int ps[n];
 ps[0] = arr[0];  //nilai pertama
@@ -608,18 +694,22 @@ for(int i=1; i<n; i++){
 ```
 
 Atau gunakan fungsi dari STL:numeric partial_sum
+
 ```cpp
 int arr[] = {1,2,3}, ps[n];
 partial_sum(arr, arr+n, ps[n]) //hasil akan disimpan di array ps
 ```
 
 Untuk mengakses jumlah subarray $l$ sampai $r$, gunakan perhitungan:
+
 ```cpp
 int subarray = ps[r] - ps[l-1]
 ```
 
 ## STRING
+
 ### Uppercase and lowercase
+
 ```cpp
 //to check
 isupper(c)
@@ -630,12 +720,14 @@ tolower(c)
 ```
 
 ### Convert string <-> integer
+
 ```cpp
 stoi(s);  // string to integer
 to_string(i);  // integer to string
 ```
 
 ### Erase a character from string
+
 ```cpp
 s.erase();      // erase all
 s.erase(2);     // erase from index 2 
@@ -643,6 +735,7 @@ s.erase(2, 4);  // earse from index 2, up to 4 character
 ```
 
 ## ARRAY
+
 ### Array summary
 
 ```cpp
@@ -673,13 +766,13 @@ int count = 0;
 bool isUnique = true
 
 for(int i=0; i<n; i++){
-	for(int j=i+1; j<n; j++){
-		if(arr[i] == arr[j]){
-			isUnique = false;  //same element detected
-			break;
-	}
-	
-	if(isUnique) count++;
+    for(int j=i+1; j<n; j++){
+        if(arr[i] == arr[j]){
+            isUnique = false;  //same element detected
+            break;
+    }
+
+    if(isUnique) count++;
 }
 ```
 
@@ -696,7 +789,7 @@ if(find(begin(arr), end(arr), "a") != end(arr)){
 ```cpp
 #include <algorithm>
 if(all_of(begin(arr), end(arr), [](bool b){return b==true};)){
-	isAllTrue = true;
+    isAllTrue = true;
 }
 ```
 
@@ -708,7 +801,9 @@ next_permutation(begin(arr), end(arr));
 ```
 
 ## VECTOR
+
 ### Function
+
 ```cpp
 // initialize with size and value 
 vector<int> vt(10, 0);  // size=10; element=0
@@ -732,8 +827,8 @@ vt.empty()   //check empty
 ```cpp
 rev = 0
 while(num>0){
-	rev = (rev*10) + (num%10);
-	num /= 10;
+    rev = (rev*10) + (num%10);
+    num /= 10;
 }
 ```
 
@@ -744,21 +839,21 @@ int n; //angka yang dicek
 bool isPrime = true;
 
 for(int i=2; i*i<=n; i++){
-	if(n%i == 0){
-		isPrime = false;
-		break;
-	}
+    if(n%i == 0){
+        isPrime = false;
+        break;
+    }
 }
 
 if(isPrime) cout << "Prime";
 else cout << "Not Prime";
 ```
 
-### GCD with Euclid Method 
+### GCD with Euclid Method
 
 ```cpp
 int euclid(int a, int b){
-	if(b==0) return a;
-		else return euclid(b, a%b);
+    if(b==0) return a;
+        else return euclid(b, a%b);
 }
 ```
