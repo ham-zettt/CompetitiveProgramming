@@ -18,7 +18,9 @@ typedef long long ll;
 #define EACHpair(pr) for(auto& a: pr){ cout << a.first << " " << a.second << endl; }
 
 // PROGRAM
-// Basic BFS
+// Mengetahui apakah suatu node dapat dicapai dari start
+
+// Pake graph1
 
 void printStack(stack<int> s){
     if (s.empty()) return;
@@ -38,7 +40,8 @@ void printQueue(queue<int> q){
 }
 
 int main(){
-	int n=6;
+	int n=6, start, end;
+	bool find = false;
 	vector<char> adj[n+1];
 	adj[1].pb(2);
 	adj[1].pb(4);
@@ -47,15 +50,21 @@ int main(){
 	adj[4].pb(6);
 	adj[5].pb(4);
 
+	cin >> start >> end;
+
 	queue<int> st;
 	bool visited[n+1];
 	fill(visited, visited+n+1, false);
 
-	st.push(1);
-	visited[1] = true;
+	st.push(start);
+	visited[start] = true;
 	while(!st.empty()){
 		int current = st.front();
 		st.pop();
+		if(current == end){
+			find = true;
+			break;
+		}
 
 		cout << current << endl;
 		for(int a : adj[current]){
@@ -65,4 +74,7 @@ int main(){
 			}
 		}
 	}
+
+	if(find) cout << "Tercapai";
+	else cout << "Tidak tercapai";
 }

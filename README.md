@@ -145,7 +145,7 @@ Mirip dengan brute force tetapi lebih dioptimasi. Masalah yang akan diselesaikan
 _Subproblem_: pemilihan angka LIS, dengan LIS[i] = banyaknya LIS dari indeks ke 0 sampai i
 
 Jadi untuk mencari LIS dari awal hingga akhir, maka carilah LIS[4] (terakhir). 
-![](/%5B-%5D%20Materi/.img/lis.png)
+![](.img/lis.png)
 
 Dengan metode **Bottom Up**, LIS[i] dapat diselesaikan dengan cara mencari nilai maksimal dari setiap LIS sebelumnya, lalu ditambah satu untuk menghitung LIS ke i sendiri
 
@@ -371,7 +371,7 @@ if(A[i] == B[i]){
 
 - **Adjenct List**
   
-  Masing-masing node disimpan dalam array. Setiap array menyimpan vector berisi node yang terhubung
+  Masing-masing node disimpan dalam array. Setiap index array menyimpan vector berisi node yang terhubung
   
   ```cpp
   // untuk graf tidak berbobot
@@ -394,6 +394,16 @@ if(A[i] == B[i]){
   int adj[N][N];
   adj[1][2] = 1;
   adj[3][1] = 1;
+  ```
+
+- **Edge List**
+  
+  Node yang terhubung disimpan didalam vector, tanpa berpatokan indeks.
+  
+  ```cpp
+  vector<int> adj;
+  adj.push_back({2,3})
+  adj.push_back({1,2})
   ```
 
 ### DFS (Depth-First Search)
@@ -481,34 +491,21 @@ for(int i: adj[current]){
 }
 ```
 
-### Sortest Path BFS
+### Component Count
 
-<a id="sortest-path-bfs"></a>
+<img src=".img/graph2.png" title="" alt="" width="336">
 
-Untuk mencari sortest path dari node A ke B. Gunakan DFS karena sifatnya menelusuri node lapis demi lapis. Sehingga node yang dikunjungi pasti memiliki jarak terpendek.
+Untuk menghitung berapa komponen pada graf, kita harus memulai traversal dari node pada masing-masing komponen
 
-```cpp
-    queue<int> q;
-    int time[n+1];
+1. Perulangan dimulai dari $visited[]$ node pertama sampai akhir. Jika belum dikunjungi maka push kedalam stack sebagai start node dari suatu komponen
 
-    for(int i=1; i<=n; i++) time[i] = -1;
+2. Traversal akan berjalan sambil mencatat node yang dikunjungi dari komponen tersebut
 
-    q.push(1);
-    time[1] = 0;
-    while(!q.empty()){
-        int current = q.front();
-        q.pop();
+3. Saat semua node terkunjungi, lanjut cek $visited[]$ untuk cek apakah ada komponen yang belum di traversal
 
-        for(int i=1; i<=n; i++){
-            if(jalur[current][i] && time[i] == -1){
-                q.push(i);
-                time[i] = time[current] + 1;
-            }
-        }
-    }
-```
+4. Jika ada lakukan traversal dari node tersebut sebagai  start node
 
-<br>
+---
 
 # Rangkuman C++
 
