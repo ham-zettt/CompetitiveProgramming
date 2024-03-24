@@ -446,6 +446,8 @@ Adalah konsep traversal pada graph yang **memprioritaskan node paling dalam terl
 
 Konsep traversal pada graph yang **memprioritaskan node terdekat**. Langkah yang dilakukan dalam penelusuran BFS:
 
+> BFS tidak dapat dilakukan dengan rekursif
+
 1. Push node awal kedalam queue
 2. Telusuri tetangga node yang belum dikunjungi, lalu push kedalam queue. Node tersebut akan dikunjungi setelah semua node sebelumnya terkunjungi
 3. Sekaligus tandai node yang masuk kedalam queue sebagai node yang sudah dikunjungi
@@ -501,9 +503,35 @@ Untuk menghitung berapa komponen pada graf, kita harus memulai traversal dari no
 
 2. Traversal akan berjalan sambil mencatat node yang dikunjungi dari komponen tersebut
 
-3. Saat semua node terkunjungi, lanjut cek $visited[]$ untuk cek apakah ada komponen yang belum di traversal
+3. Pastikan semua node terkunjungi, jika belum masukkan ke dalam stack dan ulangi langkah ke dua
 
 4. Jika ada lakukan traversal dari node tersebut sebagai  start node
+
+```cpp
+for(int i=1; i<n+1; i++){ //loop untuk visited[]
+
+		if(!visited[i]){
+			ans++;
+			qu.push(i);
+			visited[i] = true;
+
+			while(!qu.empty()){
+				int current = qu.front();
+				cout << current << endl;
+				qu.pop();
+
+				for(int i=1; i<n+1; i++){
+					if((adj[current][i] || adj[i][current]) && !visited[i]){
+						qu.push(i);
+						visited[i] = true;
+					}
+				}
+			}
+		}
+	}
+```
+
+
 
 ---
 
