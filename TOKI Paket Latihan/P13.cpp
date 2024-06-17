@@ -15,48 +15,39 @@ using namespace std;
 #define EACH2d(arr) for(auto& row: arr){ for(auto& a: row) cout << a << "";  cout << endl; }
 
 int n, m;
-vector<string> vt;
+bool visited[505][505];
+char vt[505][505];
 
-void dfs(int x, int y, int &total, bool (&visited)[][505]){	// parameter: koordinat bebek atau kucing
-	if(visited[x][y]) return;	
+int dfs(int x, int y){	// parameter: koordinat bebek atau kucing
 	visited[x][y] = true;
-	total++;
+	int total = 0;
 
-	if(x+1<m && vt[x+1][y]=='.') dfs(x+1, y, total, visited);
-	if(y+1<n && vt[x][y+1]=='.') dfs(x, y+1, total, visited);
-	if(x-1>=0 && vt[x-1][y]=='.') dfs(x-1, y, total, visited);
-	if(y-1>=0 && vt[x][y-1]=='.') dfs(x, y-1, total, visited);
+	if(vt[x+1][y]=='.' && !visited[x+1][y]) total += dfs(x+1, y) + 1;
+	if(vt[x][y+1]=='.' && !visited[x][y+1]) total += dfs(x, y+1) + 1;
+	if(vt[x-1][y]=='.' && !visited[x-1][y]) total += dfs(x-1, y) + 1;
+	if(vt[x][y-1]=='.' && !visited[x][y-1]) total += dfs(x, y-1) + 1;
+
+	return total;
 }
 
 int main() {
-	string s;
-	int total_k=0, total_b = 0;
-	bool visited_k[505][505], visited_b[505][505];
+	int total_b, total_k;
 	pair<int,int> kucing, bebek;
+	string s;
 
-	cin >> n >> m;
+	cin >> m >> n;
 
-	for(int i=0; i<n; i++){
-		cin >> s;
-		int find_k = s.find('K');
-		int find_b = s.find('B');
-		
-		if(find_k != -1){
-			kucing.first = i;
-			kucing.second = find_k;
+	for(int i=1; i<=n; i++){
+		for(int j=1; j<=m; j++){
+			cin >> vt[i][j];
+			if(vt[i][j] == 'K') kucing = {i,j};
+			if(vt[i][j] == 'B') bebek = {i,j};
 		}
-		if(find_b != -1){
-			bebek.first = i;
-			bebek.second = find_b;
-		}
-
-		vt.pb(s);
-		fill(visited_b[i], visited_b[i]+505, false);	// sekalian isi visited
-		fill(visited_k[i], visited_k[i]+505, false);
 	}
 
-	dfs(kucing.first, kucing.second, total_k, visited_k);
-	dfs(bebek.first, bebek.second, total_b, visited_b);
+	total_k = dfs(kucing.first, kucing.second) + 1;
+	memset(visited, false, sizeof(visited));
+	total_b = dfs(bebek.first, bebek.second) + 1;
 
 	if(total_k == total_b) cout << "SERI";
 	else cout << ((total_k>total_b) ? "K" : "B") << " " << abs(total_k-total_b);
